@@ -33,7 +33,10 @@ def regex_search(pattern, string, groups=False, group=None, flags=0):
     """
     if type(pattern) == list:
         for p in pattern:
-            regex = re.compile(p, flags)
+            try:
+                regex = re.compile(p, flags)
+            except re.error as e:
+                raise RegexMatchError("Unable to compile '{0}'".format(p)) from e
             results = regex.search(string)
             if not results:
                 raise RegexMatchError(
